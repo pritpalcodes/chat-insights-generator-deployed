@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Analysis - Landing Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+    <style>
+        :root {
+            --font-size-base: 1rem;
+            --font-size-scale: 1.25;
+            --spacing-unit: 1rem;
+        }
+
+        html {
+            font-size: 16px; /* Base font size */
+        }
+
+        body {
+            font-size: var(--font-size-base);
+            line-height: 1.5;
+        }
+
+        /* Fluid typography */
+        @media screen and (min-width: 20em) {
+            :root {
+                --font-size-base: calc(0.875rem + 0.5vw);
+            }
+        }
+
+        .top-banner {
+            background-color: #6c5ce7;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 16px;
+            font-weight: bold;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: transform 0.3s ease-out;
+            transform: translateY(0);
+        }
+        .top-banner img {
+            vertical-align: middle;
+            margin-left: 5px;
+            width: 20px;
+            height: 20px;
+        }
+        .top-banner.hidden {
+            transform: translateY(-100%);
+        }
+        .landing-container {
+            position: relative;
+            z-index: 1;
+            margin-top: 0;
+        }
+
+        /* New styles for the main navigation bar */
+        .main-nav {
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 2.5rem; /* Height of the top banner */
+            z-index: 999;
+            transition: top 0.3s ease-out, padding 0.3s ease-out;
+            padding: 20px 40px; /* Larger initial padding */
+        }
+
+        .main-nav.sticky {
+            top: 0;
+        }
+
+        .nav-left, .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-placeholder {
+            width: auto; /* Allow the width to adjust automatically */
+            height: 50px; /* Set a fixed height */
+            margin-right: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #666;
+            font-size: 18px;
+            font-weight: 500;
+            margin-right: 20px;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #6c5ce7;
+            transform: scaleX(0);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .nav-links a:hover::after {
+            transform: scaleX(1);
+        }
+
+        .nav-right a, .nav-right button {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #666;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .nav-right i {
+            font-size: 32px; /* Increased from 24px */
+        }
+
+        .coffee-button {
+            font-size: 32px; /* Increased from 24px */
+        }
+
+        .nav-right a i, .nav-right button i {
+            font-size: 32px; /* Increased from 28px */
+        }
+
+        .nav-right a, .nav-right button {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px; /* Added fixed width */
+            height: 40px; /* Added fixed height */
+        }
+
+        .coffee-button i, .nav-right a i {
+            font-size: 32px; /* Increased from 18px */
+        }
+
+        /* Increase size of images in features div */
+        .features {
+            display: flex;
+            justify-content: space-around;
+            padding: 40px 0;
+        }
+
+        .feature img {
+            width: 300px; /* Adjust this value as needed */
+            height: auto;
+            object-fit: cover;
+        }
+
+        /* Add margin to FAQ */
+        .faq {
+            margin: 0 10%; /* Adjust this value as needed */
+            color: #000000;
+        }
+
+        .faq h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 1rem;
+        }
+
+        .faq-item h3 {
+            font-size: 1.2rem;
+            padding: 1rem 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0;
+        }
+
+        .faq-item .toggle {
+            font-size: 1.5rem;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-content p {
+            margin: 0;
+            padding: 0 0 1rem 0;
+        }
+
+        .faq-item.active .faq-content {
+            max-height: 1000px;
+        }
+
+        .faq-item.active .toggle {
+            transform: rotate(45deg);
+        }
+
+        /* Update footer style */
+        footer {
+            background-color: #1f1f1f;
+            color: #ffffff;
+            padding: 10px 0;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 20px;
+        }
+        footer p {
+            margin: 0;
+            padding: 0;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* Update footer style */
+        footer {
+            background-color: #1f1f1f;
+            color: #ffffff;
+            /* padding: 20px 0; */
+            text-align: center;
+        }
+
+        /* Responsive container */
+        .container {
+            width: 90%;
+            max-width: 75rem; /* Instead of fixed pixel value */
+            margin: 0 auto;
+        }
+
+        /* Responsive spacing */
+        .section {
+            padding: calc(2 * var(--spacing-unit)) 0;
+        }
+
+        /* Use rem for margins and paddings */
+        .element {
+            margin-bottom: 1rem;
+            padding: 0.5rem 1rem;
+        }
+
+        /* Responsive images */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Flexbox for layout */
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-unit);
+        }
+
+        .flex-item {
+            flex: 1 1 300px;
+        }
+
+        /* Grid layout */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-unit);
+        }
+
+        /* Adjust media queries */
+        @media screen and (min-width: 48em) {
+            /* Styles for screens wider than 48em (768px at base font size) */
+        }
+
+        @media screen and (min-width: 64em) {
+            /* Styles for screens wider than 64em (1024px at base font size) */
+        }
+    </style>
+    <!-- Add Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="top-banner" id="topBanner">
+        Keeping Long-Distance Strong. Trusted by Cupids All Across India ❤️ 
+    </div>
+    
+    <nav class="main-nav" id="mainNav">
+        <div class="nav-left">
+            <img src="{{ url_for('static', filename='images/your-logo.jpeg') }}" alt="Chat Charts Logo" class="logo-placeholder">
+            <div class="nav-links">
+                <a href="uploads.html">Get Insights</a>
+                <a href="#help">Help</a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <a href="https://www.instagram.com/oye_pritpal" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://buymeacoffee.com/pritpalcodes" target="_blank" class="coffee-button">
+                <i class="fas fa-coffee"></i>
+            </a>
+        </div>
+    </nav>
+
+    <div class="landing-container">
+        <main class="hero-section">
+            <div class="content">
+                <div class="text-content">
+                    <h1>Turn your Chit-Chats into a Chat Charts!!!</h1>
+                    <p>Your conversations, captured as delightful digital insights! 
+                         Whether you're a couple of WhatsAppers, sliding into their Instagram DM's, Discord Divas or Facebook Fanatics, we've got you covered.</p>
+                    <a href="{{ url_for('upload') }}" class="cta-button">Get Started</a>
+                </div>
+                <div class="image-content">
+                    <img src="{{ url_for('static', filename='images/chat-chart.jpeg') }}" alt="Chat Chart Example">
+                </div>
+            </div>
+        </main>
+        <section class="features">
+            <div class="feature">
+                <img src="{{ url_for('static', filename='images/upload.jpg') }}" alt="Upload your chats">
+            </div>
+            <div class="feature">
+                <img src="{{ url_for('static', filename='images/create.jpg') }}" alt="We'll create your chatchart">
+            </div>
+            <div class="feature">
+                <img src="{{ url_for('static', filename='images/ship.jpg') }}" alt="Your chatchart is shipped">
+            </div>
+        </section>
+
+        <section class="personalized-prints">
+            <div class="content reverse">
+                <div class="image-content">
+                    <img src="{{ url_for('static', filename='images/personalized-prints.jpeg') }}" alt="Personalized Prints Example">
+                </div>
+                <div class="text-content">
+                    <h2>Unlock the Magic of Your Conversations!
+                    </h2>
+                    <p>Turn your chats into the ultimate digital gift—custom-built and uniquely yours! <br><br>
+                        Whether it's WhatsApp, Instagram, Discord, or Facebook Messenger, transform your conversations into personalized insights that capture the heart of your relationship. 
+                        These digital creations perfectly capture your unique bond, making them the ideal personalized gift.
+                    </p>
+                    <a href="{{ url_for('upload') }}" class="cta-button secondary">Generate Insights</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq">
+            <h2>FAQ</h2>
+            <br>
+            <div class="faq-item">
+                <h3>Is my data safe?<span class="toggle">+</span></h3>
+                <div class="faq-content">
+                    <p>Absolutely! In fact, you never even send your chat to us! Our clever site gets the details we need to make a print when you make an order. No human or third party ever sees the contents of your messages.</p>
+                
+                    <p>We'll even send you a Certificate of Data Assurance when you order so that you have proof we never had your chat. It's as though you were never here... 👻</p>
+                    <p>We do hold on to the data we need to complete your order i.e. your shipping address and the metrics on your print. But of course this data can be destroyed at your request. Just chat to us through the website, or send us an email at info@chatcharts.co.uk.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <h3>How do I export my chat?<span class="toggle">+</span></h3>
+                <div class="faq-content">
+                    <p>You can find everything you need in our <a href="#">handy guides here</a>.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <h3>What languages is it available in?<span class="toggle">+</span></h3>
+                <div class="faq-content">
+                    <p>If you speak it, we make it.</p>
+                    <p>We can make chatcharts out of any language 🌍 And if you select the Preview option when ordering, you can make any changes you'd like before printing.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <h3>Do you ship internationally?<span class="toggle">+</span></h3>
+                <div class="faq-content">
+                    <p>We sure do! We can ship products to most countries around the world.</p>
+    
+                    <p>Please be aware that different countries have unique customs rules and regulations. Unfortunately, if your package gets held at customs you will be responsible for communication and any additional costs required to release your item(s).</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2023 Chat Analysis. All rights reserved.</p>
+        </footer>
+    </div>
+    <script>
+        const topBanner = document.getElementById("topanner");
+        const mainNav = document.getElementById("mainNav");
+        let lastScrollY = window.scrollY;
+        let ticking = false;
+
+        function updateNavigation() {
+            const currentScrollY = window.scrollY;
+
+            if (currentScrollY > lastScrollY) {
+                // Scrolling down
+                topBanner.classList.add("hidden");
+                mainNav.classList.add("sticky");
+            } else {
+                // Scrolling up
+                topBanner.classList.remove("hidden");
+                mainNav.classList.remove("sticky");
+            }
+
+            lastScrollY = currentScrollY;
+            ticking = false;
+        }
+
+        window.addEventListener("scroll", () => {
+            if (!ticking) {
+                window.requestAnimationFrame(updateNavigation);
+                ticking = true;
+            }
+        });
+
+        const faqItems = document.querySelectorAll('.faq-item');
+
+        faqItems.forEach(item => {
+            const toggle = item.querySelector('.toggle');
+            toggle.addEventListener('click', () => {
+                item.classList.toggle('active');
+            });
+        });
+
+        const scrollThreshold = window.innerHeight * 0.1; // 10% of viewport height instead of fixed pixels
+
+        // Use ResizeObserver for handling resize events
+        const resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                // Update layout or recalculate dimensions here
+            }
+        });
+
+        resizeObserver.observe(document.body);
+    </script>
+</body>
+</html>

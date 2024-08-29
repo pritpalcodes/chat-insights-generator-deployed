@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Analysis Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Chat Analysis Results</h1>
+        <div class="results">
+            <div class="stat">
+                <h3>Most Common Word:</h3>
+                <p>{{ stats['most_common_word'][0] }} ({{ stats['most_common_word'][1] }} times)</p>
+            </div>
+            <div class="stat">
+                <h3>Messages Sent Day Wise:</h3>
+                <img src="{{ url_for('static', filename='pie_chart.png') }}" alt="Daywise Pie Chart">
+            </div>
+            <div class="stat">
+                <h3>Who Said "I Love You" More?</h3>
+                <p>{{ stats['love_count'] }}</p>
+            </div>
+            <div class="stat">
+                <h3>Emojis Count:</h3>
+                <p>{{ stats['emoji_count'] }}</p>
+            </div>
+            <div class="stat">
+                <h3>"I Wish You Were Here" Count:</h3>
+                <p>{{ stats['wish_count'] }}</p>
+            </div>
+            <div class="stat">
+                <h3>"Good Night" Count:</h3>
+                <p>{{ stats['good_night_count'] }}</p>
+            </div>
+            <div class="stat">
+                <h3>Hourly Distribution:</h3>
+                <p>{{ stats['hourly_distribution'] }}</p>
+            </div>
+            <div class="stat">
+                <h3>Sender Distribution:</h3>
+                <p>{{ stats['sender_distribution'] }}</p>
+            </div>
+            <div class="stat">
+                <h3>Days Spent Messaging:</h3>
+                <p>{{ stats['days_spent_messaging'] }} days</p>
+            </div>
+            <div class="stat">
+                <h3>Laugh Counter:</h3>
+                <p>{{ stats['laugh_count'] }} times ({{ stats['laugh_percentage'] }}%)</p>
+            </div>
+        </div>
+        <a href="{{ url_for('upload') }}" class="button">Analyze Another Chat</a>
+    </div>
+</body>
+</html>
