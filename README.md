@@ -1,3 +1,3 @@
-```python run app.py```
+```python app.py```
 
 command to run the app
