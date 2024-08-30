@@ -367,3 +367,36 @@ footer {
 .faq-item.active .toggle {
     transform: rotate(45deg);
 }
+
+.top-banner {
+    transition: transform 0.3s ease-out;
+}
+
+.top-banner.hidden {
+    transform: translateY(-100%);
+}
+
+.main-nav {
+    position: sticky;
+    top: 40px; /* Height of the top banner */
+    z-index: 999;
+    transition: top 0.3s ease-out;
+}
+
+.main-nav.sticky {
+    top: 0;
+}
+
+.faq-item {
+    cursor: pointer;
+}
+
+.faq-item .faq-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.faq-item.active .faq-content {
+    max-height: 1000px; /* Adjust this value based on your content */
+}

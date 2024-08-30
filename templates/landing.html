@@ -291,6 +291,39 @@
         @media screen and (min-width: 64em) {
             /* Styles for screens wider than 64em (1024px at base font size) */
         }
+
+        .top-banner {
+            transition: transform 0.3s ease-out;
+        }
+
+        .top-banner.hidden {
+            transform: translateY(-100%);
+        }
+
+        .main-nav {
+            position: sticky;
+            top: 40px; /* Height of the top banner */
+            z-index: 999;
+            transition: top 0.3s ease-out;
+        }
+
+        .main-nav.sticky {
+            top: 0;
+        }
+
+        .faq-item {
+            cursor: pointer;
+        }
+
+        .faq-item .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .faq-item.active .faq-content {
+            max-height: 1000px; /* Adjust this value based on your content */
+        }
     </style>
     <!-- Add Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -399,12 +432,11 @@
         </footer>
     </div>
     <script>
-        const topBanner = document.getElementById("topanner");
+        const topBanner = document.getElementById("topBanner");
         const mainNav = document.getElementById("mainNav");
         let lastScrollY = window.scrollY;
-        let ticking = false;
 
-        function updateNavigation() {
+        window.addEventListener("scroll", () => {
             const currentScrollY = window.scrollY;
 
             if (currentScrollY > lastScrollY) {
@@ -418,35 +450,15 @@
             }
 
             lastScrollY = currentScrollY;
-            ticking = false;
-        }
-
-        window.addEventListener("scroll", () => {
-            if (!ticking) {
-                window.requestAnimationFrame(updateNavigation);
-                ticking = true;
-            }
         });
 
         const faqItems = document.querySelectorAll('.faq-item');
 
         faqItems.forEach(item => {
-            const toggle = item.querySelector('.toggle');
-            toggle.addEventListener('click', () => {
+            item.addEventListener('click', () => {
                 item.classList.toggle('active');
             });
         });
-
-        const scrollThreshold = window.innerHeight * 0.1; // 10% of viewport height instead of fixed pixels
-
-        // Use ResizeObserver for handling resize events
-        const resizeObserver = new ResizeObserver(entries => {
-            for (let entry of entries) {
-                // Update layout or recalculate dimensions here
-            }
-        });
-
-        resizeObserver.observe(document.body);
     </script>
 </body>
 </html>
