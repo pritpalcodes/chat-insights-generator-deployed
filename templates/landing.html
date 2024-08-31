@@ -324,9 +324,24 @@
         .faq-item.active .faq-content {
             max-height: 1000px; /* Adjust this value based on your content */
         }
+
+        h1, h2, h3 {
+            font-family: "DM Serif Text", serif;
+            font-weight: 700; /* Changed from 400 to 700 for bold */
+            font-style: normal;
+        }
+
+        .dm-serif-text-regular-italic {
+            font-family: "DM Serif Text", serif;
+            font-weight: 400;
+            font-style: italic;
+        }
     </style>
     <!-- Add Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="top-banner" id="topBanner">
@@ -338,6 +353,7 @@
             <img src="{{ url_for('static', filename='images/your-logo.jpeg') }}" alt="Chat Charts Logo" class="logo-placeholder">
             <div class="nav-links">
                 <a href="{{ url_for('upload') }}">Get Insights</a>
+                <a href="#help">Help</a>
             </div>
         </div>
         <div class="nav-right">
@@ -352,7 +368,7 @@
         <main class="hero-section">
             <div class="content">
                 <div class="text-content">
-                    <h1>Turn your Chit-Chats into a Chat Charts!!!</h1>
+                    <h1 class="dm-serif-text-regular">Turn your Chit-Chats into a Chat Charts!!!</h1>
                     <p>Your conversations, captured as delightful digital insights! 
                          Whether you're a couple of WhatsAppers, sliding into their Instagram DM's, Discord Divas or Facebook Fanatics, we've got you covered.</p>
                     <a href="{{ url_for('upload') }}" class="cta-button">Get Started</a>
@@ -380,7 +396,7 @@
                     <img src="{{ url_for('static', filename='images/personalized-prints.jpeg') }}" alt="Personalized Prints Example">
                 </div>
                 <div class="text-content">
-                    <h2>Unlock the Magic of Your Conversations!
+                    <h2 class="dm-serif-text-regular">Unlock the Magic of Your Conversations!
                     </h2>
                     <p>Turn your chats into the ultimate digital gift—custom-built and uniquely yours! <br><br>
                         Whether it's WhatsApp, Instagram, Discord, or Facebook Messenger, transform your conversations into personalized insights that capture the heart of your relationship. 
@@ -392,7 +408,7 @@
         </section>
 
         <section class="faq">
-            <h2>FAQ</h2>
+            <h2 class="dm-serif-text-regular">FAQ</h2>
             <br>
             <div class="faq-item">
                 <h3>Is my data safe?<span class="toggle">+</span></h3>

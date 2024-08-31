@@ -16,6 +16,8 @@ html {
 }
 
 body {
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 400;
     font-size: var(--font-size-base);
     line-height: 1.5;
     color: #333;
