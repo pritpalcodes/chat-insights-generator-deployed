@@ -474,7 +474,7 @@
                             <div class="bg-white rounded-lg shadow-md p-6">
                                 <p class="text-gray-600 mb-4">
                                     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit ea tempora dolores qui eius pariatur
-                                    odit ad voluptas iste."
+                                    odit ad voluptas iste, cum accusantium beatae tempore quasi nesciunt distinctio."
                                 </p>
                                 <div class="flex items-center">
                                     <img class="w-12 h-12 rounded-full mr-4" src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" alt="">
@@ -570,6 +570,29 @@
                     <button id="next-testimonial" class="testimonial-nav-button">
                         <i class="fas fa-chevron-right"></i>
                     </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="build-idea bg-green-100 py-16">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-wrap items-center">
+                    <div class="w-full md:w-1/2 md:pr-12">
+                        <h2 class="text-3xl font-semibold mb-4 text-gray-800 dm-serif-text-regular">
+                            Build Your New <span class="text-green-600">Idea</span>
+                        </h2>
+                        <p class="text-gray-600 mb-6">
+                            Transform your innovative concepts into reality with our powerful chat analysis tools. Whether you're developing a new product, improving customer service, or enhancing team communication, our insights can help you build and refine your ideas.
+                        </p>
+                        <a href="{{ url_for('upload') }}" class="inline-block bg-green-500 text-white font-bold py-2 px-6 rounded-full hover:bg-green-600 transition duration-300">
+                            Start Building
+                        </a>
+                    </div>
+                    <div class="w-full md:w-1/2 mt-8 md:mt-0">
+                        <div class="transform transition duration-300 hover:scale-105">
+                            <img src="{{ url_for('static', filename='images/photo3.jpeg') }}" alt="Build Your Idea" class="rounded-lg shadow-md">
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
