@@ -5,15 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Analysis - Upload</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/upload.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="upload-container">
         <h1>Upload Your Chat</h1>
         <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
-            <input type="file" name="chat_file" accept=".txt">
+            <div class="file-input-wrapper">
+                <input type="file" name="chat_file" accept=".txt" id="chat_file">
+                <label for="chat_file" class="file-label">Choose File</label>
+                <span id="file-name">No file chosen</span>
+            </div>
             <button type="submit">Upload and Analyze</button>
         </form>
         <a href="{{ url_for('landing') }}" class="back-button">Back to Home</a>
     </div>
+    <script>
+        document.getElementById('chat_file').addEventListener('change', function(e) {
+            var fileName = e.target.files[0] ? e.target.files[0].name : 'No file chosen';
+            document.getElementById('file-name').textContent = fileName;
+        });
+    </script>
 </body>
 </html>
