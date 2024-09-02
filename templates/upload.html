@@ -11,21 +11,76 @@
 </head>
 <body>
     <div class="upload-container">
-        <h1>Upload Your Chat</h1>
-        <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
-            <div class="file-input-wrapper">
-                <input type="file" name="chat_file" accept=".txt" id="chat_file">
-                <label for="chat_file" class="file-label">Choose File</label>
-                <span id="file-name">No file chosen</span>
+        <div class="left-section">
+            <div class="image-wrapper">
+                <img src="{{ url_for('static', filename='images/chat_chart_example.jpeg') }}" alt="Chat Chart Example" class="chart-image">
             </div>
-            <button type="submit">Upload and Analyze</button>
-        </form>
-        <a href="{{ url_for('landing') }}" class="back-button">Back to Home</a>
+        </div>
+        <div class="right-section">
+            <h1>Upload Your Chat</h1>
+            <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+                <div class="button-container">
+                    <button type="button" id="upload-btn" class="btn">Upload</button>
+                    <button type="submit" class="btn">Analyze</button>
+                </div>
+                <span id="file-name">No file chosen</span>
+                <input type="file" name="chat_file" accept=".txt" id="chat_file" style="display: none;">
+            </form>
+            
+            <div class="features">
+                <img src="{{ url_for('static', filename='images/features.jpeg') }}" alt="Features" class="features-image">
+            </div>
+
+            <div class="faq-section">
+                <div class="faq-item">
+                    <h3>Shipping & delivery<span class="toggle-icon">+</span></h3>
+                    <div class="faq-content">
+                        <!-- Shipping content -->
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <h3>Product details<span class="toggle-icon">+</span></h3>
+                    <div class="faq-content">
+                        <!-- Product details content -->
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <h3>Refund policy<span class="toggle-icon">+</span></h3>
+                    <div class="faq-content">
+                        <!-- Refund policy content -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="back-button-wrapper">
+                <a href="{{ url_for('landing') }}" class="back-button">Back to Home</a>
+            </div>
+        </div>
     </div>
     <script>
-        document.getElementById('chat_file').addEventListener('change', function(e) {
-            var fileName = e.target.files[0] ? e.target.files[0].name : 'No file chosen';
-            document.getElementById('file-name').textContent = fileName;
+        const fileInput = document.getElementById('chat_file');
+        const fileName = document.getElementById('file-name');
+        const uploadBtn = document.getElementById('upload-btn');
+
+        uploadBtn.addEventListener('click', function() {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', function(e) {
+            if (this.files[0]) {
+                fileName.textContent = this.files[0].name;
+                uploadBtn.textContent = 'Change File';
+            } else {
+                fileName.textContent = 'No file chosen';
+                uploadBtn.textContent = 'Upload';
+            }
+        });
+
+        // Add JavaScript to toggle FAQ items
+        document.querySelectorAll('.faq-item h3').forEach(item => {
+            item.addEventListener('click', event => {
+                event.currentTarget.parentElement.classList.toggle('active');
+            });
         });
     </script>
 </body>
