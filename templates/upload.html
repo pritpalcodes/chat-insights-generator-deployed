@@ -8,8 +8,77 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        /* Loader styles */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            display: none; /* Initially hidden */
+            backdrop-filter: blur(5px); /* Blur effect */
+        }
+
+        /* Custom loader */
+        .custom-loader {
+            display: flex;
+            justify-content: space-around;
+            width: 80px; /* Reduced width */
+        }
+
+        .circle {
+            width: 15px; /* Reduced size */
+            height: 15px; /* Reduced size */
+            border-radius: 50%;
+            background-color: #3498db;
+            animation: bounce 1.5s infinite ease-in-out;
+        }
+
+        .circle:nth-child(2) {
+            animation-delay: -0.5s;
+        }
+
+        .circle:nth-child(3) {
+            animation-delay: -1s;
+        }
+
+        .circle:nth-child(4) {
+            animation-delay: -1.5s;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .loader-text {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #3498db;
+        }
+    </style>
 </head>
 <body>
+    <div id="loader">
+        <div class="custom-loader">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
+        <div class="loader-text">Making Magic takes time... hang tight</div>
+    </div>
     <div class="upload-container">
         <div class="left-section">
             <div class="image-wrapper">
@@ -18,7 +87,7 @@
         </div>
         <div class="right-section">
             <h1>Upload Your Chat</h1>
-            <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data" id="upload-form">
                 <div class="button-container">
                     <button type="button" id="upload-btn" class="btn">Upload</button>
                     <button type="submit" class="btn">Analyze</button>
@@ -35,19 +104,47 @@
                 <div class="faq-item">
                     <h3>Shipping & delivery<span class="toggle-icon">+</span></h3>
                     <div class="faq-content">
-                        <!-- Shipping content -->
+                        <b>Previews </b>
+                        <br>
+                        If you order a preview, we usually get this to you within 3 working days
+                        <br>
+                        <b>Shipping estimates</b>
+                        <br>
+                        India - Priority: 2-4 working days. Standard: 5-7 working days.
+                        <br>
+                        Rest of the world - Up to 7 working days.
                     </div>
                 </div>
                 <div class="faq-item">
                     <h3>Product details<span class="toggle-icon">+</span></h3>
                     <div class="faq-content">
-                        <!-- Product details content -->
+                        <b>Print sizes</b>
+                        <br>
+                        Unframed: 29.7x42cm (A3)
+                        <br>
+                        Framed: 30x45cm
+                        <br>
+                        <br>
+                        <b>Frame specs</b>
+                        <br>
+                        Shatterproof, transparent plexiglass. Without mount.
+                        <br>
+                        <b>We only use the best quality paper so we know the Chat Charts really POP! 💥</b>
                     </div>
                 </div>
                 <div class="faq-item">
                     <h3>Refund policy<span class="toggle-icon">+</span></h3>
                     <div class="faq-content">
-                        <!-- Refund policy content -->
+                        <b>Refund policy</b>
+                        <br>
+                        Due to the tailor made nature of our prints we can only offer refund for damaged goods. This does not include the statistics used in your print.
+                        <br>
+                        <b>However if you check the "Preview" option when making your order, you will be able to preview your Chat Chart before it goes to print and make any changes you like.</b>
+                        <br><br>
+                        <b>Cancellation policy</b>
+                        <br>
+                        You are free to cancel your order and receive a full refund anytime before your Chat Chart has been designed. Depending on our workload, this can be 1-2 hours after purchasing.
+                        <br>
                     </div>
                 </div>
             </div>
@@ -61,6 +158,8 @@
         const fileInput = document.getElementById('chat_file');
         const fileName = document.getElementById('file-name');
         const uploadBtn = document.getElementById('upload-btn');
+        const uploadForm = document.getElementById('upload-form');
+        const loader = document.getElementById('loader');
 
         uploadBtn.addEventListener('click', function() {
             fileInput.click();
@@ -81,6 +180,11 @@
             item.addEventListener('click', event => {
                 event.currentTarget.parentElement.classList.toggle('active');
             });
+        });
+
+        // Show loader on form submit
+        uploadForm.addEventListener('submit', function() {
+            loader.style.display = 'flex';
         });
     </script>
 </body>
