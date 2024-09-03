@@ -25,18 +25,27 @@
         }
         .results-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
         }
         .stat-card {
             background-color: #ffffff;
             border-radius: 8px;
             padding: 1.5rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
         }
         .stat-card h2 {
             font-size: 1.2rem;
             margin-bottom: 1rem;
+            flex-grow: 0;
+        }
+        .stat-card-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         .button {
             display: inline-block;
@@ -51,6 +60,22 @@
         .button:hover {
             background-color: #2980b9;
         }
+        .hourly-distribution {
+            display: flex;
+            justify-content: space-between;
+        }
+        .am-distribution, .pm-distribution {
+            width: 48%;
+        }
+        .am-distribution h3, .pm-distribution h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: #3498db;
+        }
+        .am-distribution p, .pm-distribution p {
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
     </style>
 </head>
 <body>
@@ -59,7 +84,9 @@
         <div class="results-grid">
             <div class="stat-card">
                 <h2>Most Common Word</h2>
-                <p>{{ stats['most_common_word'][0] }} ({{ stats['most_common_word'][1] }} times)</p>
+                <div class="stat-card-content">
+                    <p>{{ stats['most_common_word'][0] }} ({{ stats['most_common_word'][1] }} times)</p>
+                </div>
             </div>
             <div class="stat-card">
                 <h2>Messages Sent Day Wise</h2>
@@ -67,11 +94,30 @@
             </div>
             <div class="stat-card">
                 <h2>Who Said "I Love You" More?</h2>
-                <p>{{ stats['love_count'] }}</p>
+                <div class="stat-card-content">
+                    {% for sender, count in stats['love_count'].items() %}
+                        <p>{{ sender }}: {{ count }}</p>
+                    {% endfor %}
+                </div>
             </div>
             <div class="stat-card">
-                <h2>Emojis Count</h2>
-                <p>{{ stats['emoji_count'] }}</p>
+                <h2>Top 10 Emojis</h2>
+                <div style="display: flex; justify-content: space-between;">
+                    <div style="width: 48%;">
+                        {% for emoji, count in stats['top_10_emojis'].items() %}
+                            {% if loop.index <= 5 %}
+                                <p>{{ emoji|safe }}: {{ count }}</p>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div style="width: 48%;">
+                        {% for emoji, count in stats['top_10_emojis'].items() %}
+                            {% if loop.index > 5 %}
+                                <p>{{ emoji|safe }}: {{ count }}</p>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
             <div class="stat-card">
                 <h2>"I Wish You Were Here" Count</h2>
@@ -82,12 +128,27 @@
                 <p>{{ stats['good_night_count'] }}</p>
             </div>
             <div class="stat-card">
-                <h2>Hourly Distribution</h2>
-                <p>{{ stats['hourly_distribution'] }}</p>
+                <h2>Hourly Distribution of Messages</h2>
+                <div class="hourly-distribution">
+                    <div class="am-distribution">
+                        <h3>AM</h3>
+                        {% for hour, percentage in stats['hourly_distribution'].items() if hour|int < 12 %}
+                            <p>{{ hour }}:00 - {{ percentage|round(2) }}%</p>
+                        {% endfor %}
+                    </div>
+                    <div class="pm-distribution">
+                        <h3>PM</h3>
+                        {% for hour, percentage in stats['hourly_distribution'].items() if hour|int >= 12 %}
+                            <p>{{ hour|int|string if hour|int > 12 else '12' }}:00 - {{ percentage|round(2) }}%</p>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
             <div class="stat-card">
                 <h2>Sender Distribution</h2>
-                <p>{{ stats['sender_distribution'] }}</p>
+                {% for sender, percentage in stats['sender_distribution'].items() %}
+                    <p>{{ sender }}: {{ "%.2f"|format(percentage) }}%</p>
+                {% endfor %}
             </div>
             <div class="stat-card">
                 <h2>Days Spent Messaging</h2>
@@ -95,7 +156,7 @@
             </div>
             <div class="stat-card">
                 <h2>Laugh Counter</h2>
-                <p>{{ stats['laugh_count'] }} times ({{ stats['laugh_percentage'] }}%)</p>
+                <p>{{ stats['laugh_count'] }} times ({{ "%.2f"|format(stats['laugh_percentage']) }}%)</p>
             </div>
         </div>
         <div style="text-align: center; margin-top: 2rem;">

@@ -6,6 +6,13 @@ from collections import Counter
 import matplotlib.pyplot as plt
 import os
 import calendar
+import emoji
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+import nltk
+
+nltk.download('stopwords')
+nltk.download('punkt')
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads/'
@@ -44,7 +51,14 @@ def analyze_chat(file_path):
 
         # Analysis 3: Count specific emojis
         emojis = ['😘', '🫡', '🥳', '🫶🏻', '❤️']
-        emoji_count = {emoji: df['Message'].str.count(emoji).sum() for emoji in emojis}
+        emoji_count = {}
+        for message in df['Message']:
+            for char in message:
+                if char in emoji.EMOJI_DATA:
+                    emoji_count[char] = emoji_count.get(char, 0) + 1
+
+        # Get top 10 emojis
+        top_10_emojis = dict(sorted(emoji_count.items(), key=lambda x: x[1], reverse=True)[:10])
 
         # Analysis 4: Count "I wish you were here"
         wish_count = df['Message'].str.contains('I wish you were here', case=False).sum()
@@ -106,7 +120,7 @@ def analyze_chat(file_path):
             "days_spent_messaging": days_spent_messaging,
             "laugh_count": laugh_count,
             "laugh_percentage": laugh_percentage,
-            "top_emojis": emoji_count,  # Added this line
+            "top_10_emojis": top_10_emojis,
             "message_count": len(df),  # Added this line
         }
 
