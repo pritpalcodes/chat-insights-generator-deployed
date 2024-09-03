@@ -68,11 +68,19 @@ def analyze_chat(file_path):
         # Hourly Distribution of Messages
         hourly_distribution = df['Hour'].value_counts(normalize=True).sort_index() * 100
 
-        # Convert to 12-hour format with AM/PM
-        hour_labels = []
-        for hour in hourly_distribution.index:
-            hour_label = pd.to_datetime(f'{hour}:00', format='%H:%M').strftime('%I:%M %p')
-            hour_labels.append(hour_label)
+        # Convert to 12-hour format and separate into morning and evening
+        morning_messages = {}
+        evening_messages = {}
+        for hour, percentage in hourly_distribution.items():
+            hour_12 = pd.to_datetime(f'{hour}:00', format='%H:%M').strftime('%I:%M %p')
+            if hour < 12 or hour == 23:  # Consider 11 PM as part of the morning
+                morning_messages[hour_12] = percentage
+            else:
+                evening_messages[hour_12] = percentage
+
+        # Sort the dictionaries by hour
+        morning_messages = dict(sorted(morning_messages.items(), key=lambda x: pd.to_datetime(x[0], format='%I:%M %p').time()))
+        evening_messages = dict(sorted(evening_messages.items(), key=lambda x: pd.to_datetime(x[0], format='%I:%M %p').time()))
 
         # Who Texted More?
         sender_distribution = df['Sender'].value_counts(normalize=True) * 100
@@ -98,6 +106,8 @@ def analyze_chat(file_path):
             "days_spent_messaging": days_spent_messaging,
             "laugh_count": laugh_count,
             "laugh_percentage": laugh_percentage,
+            "top_emojis": emoji_count,  # Added this line
+            "message_count": len(df),  # Added this line
         }
 
         return stats
