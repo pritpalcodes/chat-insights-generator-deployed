@@ -1,3 +1,3 @@
 ```python app.py```
 
-command to run the app
+command to run the aplication
